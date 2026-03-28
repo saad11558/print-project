@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinator Dashboard – PrintShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🖨️</div>
+        <span>Print<strong>Shop</strong></span>
+      </a>
+      <span class="role-tag tag-cr">Coordinator</span>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-label">MANAGEMENT</div>
+      <a class="nav-item active" data-section="cr-dashboard-section" onclick="showSection(this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a class="nav-item" data-section="cr-classrooms-section" onclick="showSection(this)">
+        <span class="nav-icon">🎓</span> Classrooms
+        <span class="badge badge-primary nav-badge" id="cr-classrooms-badge">0</span>
+      </a>
+      <a class="nav-item" data-action="open-create-classroom">
+        <span class="nav-icon">➕</span> Create Classroom
+      </a>
+      <a class="nav-item" data-action="open-create-poll">
+        <span class="nav-icon">📝</span> Create Poll
+      </a>
+
+      <div class="menu-label" style="margin-top:8px;">STUDENTS</div>
+      <a class="nav-item" data-section="cr-students-section" onclick="showSection(this)">
+        <span class="nav-icon">👥</span> Student List
+      </a>
+      <a class="nav-item" data-section="cr-payments-section" onclick="showSection(this)">
+        <span class="nav-icon">💳</span> Payment Tracker
+        <span class="badge badge-success nav-badge" id="cr-paid-badge">0</span>
+      </a>
+
+      <div class="menu-label" style="margin-top:8px;">ANALYTICS</div>
+      <a class="nav-item" data-section="cr-analytics-section" onclick="showSection(this)">
+        <span class="nav-icon">📈</span> Analytics
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="#" class="nav-item nav-item-logout" id="cr-logout-btn">
+        <span class="nav-icon">🚪</span> Log Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main -->
+  <main class="main-content" id="main-content">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Class Representative Portal</div>
+      <div class="topbar-actions">
+        <div class="notif-bell-wrap">
+          <button class="notif-bell" id="notif-bell" onclick="NotifEngine.togglePanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-bell-count" id="notif-count" data-count="0"></span>
+          </button>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel-header">
+              <h4>🔔 Notifications</h4>
+              <button class="notif-clear-btn" onclick="NotifEngine.clearAll()">Clear All</button>
+            </div>
+            <div class="notif-panel-body" id="notif-panel-body"></div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="toggleTheme()">
+          <span class="sun-icon">☀️</span><span class="moon-icon hidden">🌙</span>
+        </button>
+        <div class="avatar avatar-sm">RP</div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page-content" id="cr-dashboard-section">
+      <div class="page-header" id="cr-overview">
+        <h1>Welcome, Rahul ✌️</h1>
+        <p>Manage your classrooms, create printing polls, and track student payments.</p>
+      </div>
+
+      <!-- Live Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-indigo">🎓</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Classrooms</div>
+            <div class="stat-card-value" id="stat-classrooms">0</div>
+          </div>
+        </div>
+        <div class="stat-card stat-card-highlight">
+          <div class="stat-card-icon icon-bg-blue">📝</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Active Polls</div>
+            <div class="stat-card-value" id="stat-polls">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-amber">👥</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Students</div>
+            <div class="stat-card-value" id="stat-students">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-green">₹</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Revenue (₹)</div>
+            <div class="stat-card-value" id="stat-payments">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-split" style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
+        <div class="card" style="margin-top:0;">
+          <div class="card-header">
+            <h3>Your Classrooms</h3>
+          </div>
+          <div class="card-body" id="cr-recent-classrooms">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:0;">
+          <div class="card-header" style="background-color: var(--primary); color: white;">
+            <h3>📦 Pending Pickups</h3>
+            <p style="font-size:12px; opacity:0.8;">Orders marked Ready</p>
+          </div>
+          <div class="card-body" id="cr-pending-pickups" style="max-height: 400px; overflow-y: auto;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLASSROOMS & POLLS ===== -->
+    <div class="page-content hidden" id="cr-classrooms-section">
+      <div class="page-header">
+        <h1>Classrooms &amp; Polls 📚</h1>
+        <p>Detailed view of all polling activity across your classes.</p>
+      </div>
+
+      <!-- Classrooms List -->
+      <div id="classrooms-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- ===== PRINT QUEUE (new) ===== -->
+    <div class="page-content hidden" id="cr-print-queue-section">
+      <div class="page-header">
+        <h1>Print Queue 🖨️</h1>
+        <p>Manage all student print orders. Update status as documents are printed.</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="tabs" id="status-tabs">
+            <button class="tab active" data-filter="all" onclick="filterStatusQueue('all',this)">All</button>
+            <button class="tab" data-filter="pending" onclick="filterStatusQueue('pending',this)">⏳ Pending</button>
+            <button class="tab" data-filter="printing" onclick="filterStatusQueue('printing',this)">🖨️ Printing</button>
+            <button class="tab" data-filter="ready" onclick="filterStatusQueue('ready',this)">✅ Ready</button>
+            <button class="tab" data-filter="collected" onclick="filterStatusQueue('collected',this)">📦 Collected</button>
+          </div>
+        </div>
+        <div class="card-body" id="status-queue-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== STUDENT LIST (new) ===== -->
+    <div class="page-content hidden" id="cr-students-section">
+      <div class="page-header">
+        <h1>Student List 👥</h1>
+        <p>All students across your classrooms.</p>
+      </div>
+      <div id="cr-students-list"></div>
+    </div>
+
+    <!-- ===== PAYMENT TRACKER (new) ===== -->
+    <div class="page-content hidden" id="cr-payments-section">
+      <div class="page-header">
+        <h1>Payment Tracker 💳</h1>
+        <p>Monitor who has paid and who still owes across all polls.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-green">✅</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Paid Students</div>
+            <div class="stat-card-value" id="pay-track-paid">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-amber">⏳</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Pending</div>
+            <div class="stat-card-value" id="pay-track-pending">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-indigo">₹</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Collected (₹)</div>
+            <div class="stat-card-value" id="pay-track-collected">₹0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-blue">📊</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Collection Rate</div>
+            <div class="stat-card-value" id="pay-track-rate">0%</div>
+          </div>
+        </div>
+      </div>
+      <div id="cr-payment-tracker-list"></div>
+    </div>
+
+    <!-- ===== ANALYTICS (new) ===== -->
+    <div class="page-content hidden" id="cr-analytics-section">
+      <div class="page-header">
+        <h1>Analytics 📈</h1>
+        <p>Insights into your classrooms, polls, and print activity.</p>
+      </div>
+      <div id="cr-analytics-content"></div>
+    </div>
+
+  </main>
+
+  <!-- Modals -->
+  <!-- Create Classroom Modal -->
+  <div class="modal-overlay" id="create-classroom-modal">
+    <div class="modal">
+      <div class="modal-header" style="background:var(--primary);">
+        <div><h3>Create Classroom</h3><p>Set up a space for bulk print orders</p></div>
+        <button class="modal-close btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Classroom Name (e.g. CSE-A)</label>
+          <input type="text" id="classroom-name" class="form-input" placeholder="Enter class/section">
+        </div>
+        <div class="form-row form-group">
+          <div>
+            <label>Subject</label>
+            <input type="text" id="classroom-subject" class="form-input" placeholder="e.g. OS">
+          </div>
+          <div>
+            <label>Semester</label>
+            <input type="number" id="classroom-semester" class="form-input" placeholder="4" min="1" max="8">
+          </div>
+        </div>
+
+        <div class="join-code-display mt-2" style="background:var(--bg-secondary);">
+          <div class="join-code-label">Generated Invite Code</div>
+          <div class="join-code-value" id="preview-join-code">------</div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" id="btn-submit-classroom">Create Classroom</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Poll Modal -->
+  <div class="modal-overlay" id="create-poll-modal">
+    <div class="modal" style="max-width:550px;">
+      <div class="modal-header" style="background:linear-gradient(135deg,var(--primary),var(--secondary));">
+        <div><h3>New Print Request</h3><p>Upload doc, set deadline &amp; price</p></div>
+        <button class="modal-close btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body" style="max-height:80vh; overflow-y:auto;">
+        
+        <div class="form-group">
+          <label>Select Classroom</label>
+          <select id="poll-classroom" class="form-input"></select>
+        </div>
+        
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="poll-title" class="form-input" placeholder="e.g. Lab Manual Complete">
+        </div>
+        
+        <div class="form-group">
+          <label>Notes / Description (Optional)</label>
+          <textarea id="poll-description" class="form-input" placeholder="Extra instructions..." rows="2"></textarea>
+        </div>
+
+        <div class="form-row form-group">
+          <div>
+            <label>Price (₹)</label>
+            <input type="number" id="poll-price" class="form-input" placeholder="25" min="1">
+          </div>
+          <div>
+            <label>Duration (mins)</label>
+            <input type="number" id="poll-duration" class="form-input" value="60" min="5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Document (PDF/Image)</label>
+          <div class="upload-zone" id="cr-upload-zone">
+            <svg class="icon-32 mb-2" style="margin:0 auto;stroke:var(--primary);" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div>Drop file here or <strong>click to browse</strong></div>
+            <div class="text-xs text-muted mt-2">Max 5MB (PDF/JPG/PNG)</div>
+          </div>
+          <input type="file" id="cr-file-input" class="hidden" accept=".pdf,.doc,.docx,image/*">
+          
+          <div class="file-preview hidden" id="cr-file-preview">
+            <div class="flex items-center gap-2">
+              <svg class="icon-20" style="stroke:var(--danger);" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div>
+                <div class="text-sm font-semibold" id="cr-file-name">filename.pdf</div>
+                <div class="text-xs text-muted" id="cr-file-size">0 KB</div>
+              </div>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="btn-remove-cr-file" style="color:var(--danger)">✕</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Upload Payment QR Code</label>
+          <div class="upload-zone qr-upload-zone" id="qr-upload-zone">
+            <svg class="icon-32 mb-2" style="margin:0 auto;stroke:var(--primary);" viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zm4 0h3v3h-3zm-4 4h3v3h-3zm4 0h3v3h-3z"/></svg>
+            <div>Drop QR image or <strong>click to upload</strong></div>
+            <div class="text-xs text-muted mt-2">JPG/PNG (Payment QR Code)</div>
+          </div>
+          <input type="file" id="qr-file-input" class="hidden" accept="image/*">
+          <div class="qr-preview hidden" id="qr-preview">
+            <img id="qr-preview-img" src="" alt="QR Preview" class="qr-preview-image">
+            <div class="qr-preview-info">
+              <div class="text-sm font-semibold">QR Code Uploaded ✓</div>
+              <button class="btn btn-ghost btn-sm" id="btn-remove-qr" style="color:var(--danger)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg mt-3" id="btn-submit-poll">Launch Print Poll</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

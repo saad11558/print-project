@@ -1,0 +1,22 @@
+[
+  {
+    "email": "ved@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "timestamp": "2026-03-26T10:10:13.388Z"
+  },
+  {
+    "name": "vedant s",
+    "email": "vedant@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "timestamp": "2026-03-26T10:27:57.751Z"
+  },
+  {
+    "name": "amit",
+    "email": "amitmargankop@gmail.com",
+    "password": "amit@1573",
+    "role": "coordinator",
+    "timestamp": "2026-03-26T15:50:32.611Z"
+  }
+]

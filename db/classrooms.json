@@ -1,0 +1,150 @@
+[
+  {
+    "id": "7026480e-7976-4a27-bcee-d74d318fc3b7",
+    "name": "3-B",
+    "subject": "LATEX",
+    "semester": 4,
+    "code": "X7TFN6",
+    "cr": "VEDANT",
+    "createdBy": "ved@122",
+    "joinedUsers": [
+      "sai@122"
+    ],
+    "createdAt": "2026-03-26T17:32:13.496Z"
+  },
+  {
+    "id": "80998b20-d272-47fe-a40d-45053179d759",
+    "name": "Class A",
+    "subject": "OS",
+    "semester": 5,
+    "code": "WD2GKS",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [
+      "vedant@gmail.com"
+    ],
+    "createdAt": "2026-03-27T07:56:11.021Z"
+  },
+  {
+    "id": "4780888f-7030-45a4-926a-09a2e4df13f4",
+    "name": "class b",
+    "subject": "os",
+    "semester": 5,
+    "code": "EYY65C",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [
+      "vedant@gmail.com"
+    ],
+    "createdAt": "2026-03-27T08:02:24.209Z"
+  },
+  {
+    "id": "3c0885a2-2a5b-4a2e-9ce8-9a3bba93890f",
+    "name": "class c",
+    "subject": "os",
+    "semester": 5,
+    "code": "LXCZHM",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [],
+    "createdAt": "2026-03-27T11:02:03.372Z"
+  },
+  {
+    "id": "ea20c6bb-9372-4610-867b-ad7aa267f031",
+    "name": "CLASS D",
+    "subject": "DBMS",
+    "semester": 4,
+    "code": "A9AM5V",
+    "cr": "Vedant Shelar",
+    "createdBy": "xyz@gmail.com",
+    "joinedUsers": [],
+    "createdAt": "2026-03-27T11:51:54.773Z"
+  },
+  {
+    "id": "bd6e915b-1a1e-405a-aeb9-d7d4e93a69df",
+    "name": "class 5",
+    "subject": "hg",
+    "semester": 8,
+    "code": "UGLNRN",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [
+      "vedant@gmail.com"
+    ],
+    "createdAt": "2026-03-27T12:18:04.215Z"
+  },
+  {
+    "id": "803dfcf7-09a5-4a5b-a6d6-70f15051ffec",
+    "name": "class A",
+    "subject": "os",
+    "semester": 3,
+    "code": "6PSNSD",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [
+      "vedant@gmail.com"
+    ],
+    "createdAt": "2026-03-27T14:54:48.493Z"
+  },
+  {
+    "id": "53c88b20-1761-4611-bd03-6a5c1da5ae88",
+    "name": "abc",
+    "subject": "qw",
+    "semester": 4,
+    "code": "LLB4QE",
+    "cr": "VEDANT",
+    "createdBy": "admin@gmail.com",
+    "joinedUsers": [],
+    "createdAt": "2026-03-27T16:26:06.172Z"
+  },
+  {
+    "id": "2ba82e3b-2ec0-4509-b1fe-4b7fe42932f3",
+    "name": "class a",
+    "subject": "os",
+    "semester": 5,
+    "code": "CGFZ8H",
+    "cr": "SAISH",
+    "createdBy": "saish1@gmail.com",
+    "joinedUsers": [],
+    "createdAt": "2026-03-28T06:23:18.810Z"
+  },
+  {
+    "id": "cc10330a-1861-4784-b434-16ad625ada6a",
+    "name": "class b",
+    "subject": "dms",
+    "semester": 4,
+    "code": "J326KJ",
+    "cr": "SAISH MALALIKAR",
+    "createdBy": "saish1@gmail.com",
+    "joinedUsers": [
+      "vedant1@gmail.com"
+    ],
+    "createdAt": "2026-03-28T07:06:36.495Z"
+  },
+  {
+    "id": "f34d4222-85d0-4fcd-986e-d69a8825ce69",
+    "name": "Class F",
+    "subject": "os",
+    "semester": 5,
+    "code": "2NM3FT",
+    "cr": "SAISH MALALIKAR",
+    "createdBy": "saish1@gmail.com",
+    "joinedUsers": [
+      "vedant1@gmail.com"
+    ],
+    "createdAt": "2026-03-28T07:25:21.923Z"
+  },
+  {
+    "id": "1c3d20f9-871b-41ff-a021-ac7c0559d5cd",
+    "name": "class b",
+    "subject": "oops",
+    "semester": 4,
+    "code": "3QMUEA",
+    "cr": "SAISH MALALIKAR",
+    "createdBy": "saish1@gmail.com",
+    "joinedUsers": [
+      "vedant1@gmail.com"
+    ],
+    "createdAt": "2026-03-28T08:10:29.562Z"
+  }
+]

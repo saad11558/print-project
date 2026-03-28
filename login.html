@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - PrintShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Premium Role Selection UI */
+    body.login-page {
+      background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .role-selection-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .role-header h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .role-header p {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+
+    .roles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .role-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px;
+      background: #ffffff;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      color: var(--text-primary);
+      text-align: left;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+    }
+    
+    .role-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 14px;
+      box-shadow: inset 0 0 0 2px transparent;
+      transition: box-shadow 0.3s ease;
+      pointer-events: none;
+    }
+
+    .role-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      background: #ffffff;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Unique Glow & Border Colors per Role */
+    .role-card.student:hover {
+      border-color: #3b82f6;
+    }
+    .role-card.student:hover::before { box-shadow: inset 0 0 20px rgba(59, 130, 246, 0.1); }
+    
+    .role-card.coordinator:hover {
+      border-color: #8b5cf6;
+    }
+    .role-card.coordinator:hover::before { box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.1); }
+    
+    .role-card.shopkeeper:hover {
+      border-color: #10b981;
+    }
+    .role-card.shopkeeper:hover::before { box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.1); }
+
+    .role-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .role-card:hover .role-icon-wrap {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .icon-student { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); color: #2563eb; }
+    .icon-coordinator { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); color: #8b5cf6; }
+    .icon-shopkeeper { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); color: #10b981; }
+    
+    .role-text h3 {
+      margin-bottom: 4px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    
+    .role-text p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+    
+    .role-arrow {
+      margin-left: auto;
+      color: #9ca3af;
+      font-size: 1.5rem;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+    
+    .role-card.student:hover .role-arrow { transform: translateX(5px); color: #3b82f6; }
+    .role-card.coordinator:hover .role-arrow { transform: translateX(5px); color: #8b5cf6; }
+    .role-card.shopkeeper:hover .role-arrow { transform: translateX(5px); color: #10b981; }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 32px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--text-primary); }
+  </style>
+</head>
+<body class="login-page">
+
+  <div class="animate-fade-in-up" style="width:100%; display:flex; justify-content:center;">
+    <div class="role-selection-card">
+      <div class="role-header">
+        <a href="index.html" class="logo justify-center mb-4" style="text-decoration:none;">
+          <div class="logo-icon" style="font-size:2.5rem; line-height:1; background:linear-gradient(135deg, var(--primary), var(--primary-hover)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">🖨️</div>
+          <span style="font-size:2rem; color:var(--text-primary);">Print<strong class="text-primary">Shop</strong></span>
+        </a>
+        <h2>Select Your Role</h2>
+        <p>Choose your account type to continue</p>
+      </div>
+
+      <div class="roles-list">
+        <a href="student-login.html" class="role-card student">
+          <div class="role-icon-wrap icon-student">🎓</div>
+          <div class="role-text">
+            <h3>Student</h3>
+            <p>Join classrooms, participate in polls, and pay securely online.</p>
+          </div>
+          <div class="role-arrow">→</div>
+        </a>
+
+        <a href="cr-login.html" class="role-card coordinator">
+          <div class="role-icon-wrap icon-coordinator">👨‍🏫</div>
+          <div class="role-text">
+            <h3>Coordinator</h3>
+            <p>Create and manage polls on behalf of your class efficiently.</p>
+          </div>
+          <div class="role-arrow">→</div>
+        </a>
+
+        <a href="shopkeeper-login.html" class="role-card shopkeeper">
+          <div class="role-icon-wrap icon-shopkeeper">🏪</div>
+          <div class="role-text">
+            <h3>Shop Owner</h3>
+            <p>Manage incoming orders, track active queues, and verify payments.</p>
+          </div>
+          <div class="role-arrow">→</div>
+        </a>
+      </div>
+      
+      <div>
+        <a href="index.html" class="back-btn">&larr; Return to Home</a>
+      </div>
+    </div>
+  </div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+</html>

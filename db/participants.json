@@ -1,0 +1,46 @@
+[
+  {
+    "id": "dd712c1a-a2fe-491c-b4ed-dc1a221aa5a3",
+    "pollId": "46bf3605-faa2-4fb2-b9ac-2ed0220cdc01",
+    "userId": "vedant1@gmail.com",
+    "userName": "VEDANT",
+    "status": "verified",
+    "joinedAt": 1774683029668,
+    "paidAt": 1774683046214
+  },
+  {
+    "id": "eed037b4-53b1-4645-9206-4b499837c3e2",
+    "pollId": "e1bedcaf-31e5-48b1-9f48-2fccf8dcfba1",
+    "userId": "vedant1@gmail.com",
+    "userName": "VEDANT",
+    "status": "joined",
+    "joinedAt": 1774683031617,
+    "paidAt": 1774683631407
+  },
+  {
+    "id": "a3ad32e9-d6a4-47ce-a270-d1b20469a453",
+    "pollId": "24336850-a489-488c-b618-6459302a0aaf",
+    "userId": "vedant1@gmail.com",
+    "userName": "VEDANT",
+    "status": "verified",
+    "joinedAt": 1774683153745,
+    "paidAt": 1774683171858
+  },
+  {
+    "id": "d8901caa-76b6-44b4-ae04-47c9b127b458",
+    "pollId": "00feb68c-5756-4be0-8208-bcc4f74a8bcf",
+    "userId": "vedant1@gmail.com",
+    "userName": "VEDANT",
+    "status": "verified",
+    "joinedAt": 1774685622005,
+    "paidAt": 1774685638810
+  },
+  {
+    "id": "8e8ff9fe-1463-4ee4-822d-2bf1fb066f1a",
+    "pollId": "9ca9dce5-8fac-4180-bdce-a89278b12784",
+    "userId": "vedant1@gmail.com",
+    "userName": "VEDANT",
+    "status": "joined",
+    "joinedAt": 1774686058203
+  }
+]

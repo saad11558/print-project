@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment – Campus PrintShop</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* When used as a popup, body fills the window */
+        body {
+            display: block;
+            background: #f4f5f7;
+        }
+
+        /* Hidden main-container since we auto-open the modal */
+        .main-container {
+            display: none;
+        }
+
+        /* Make modal always visible in popup mode */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: block;
+            overflow-y: auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+            z-index: 1000;
+            opacity: 1;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Fallback main-container (hidden by CSS above, only used in standalone mode) -->
+    <div class="main-container">
+        <h2>Checkout Phase</h2>
+        <div class="item-card">
+            <img src="https://placehold.co/100x100/e2e8f0/475569?text=Print" alt="Item">
+            <div class="item-details">
+                <h3>Document Print</h3>
+                <p>Qty: 1 • Color: B&W</p>
+                <h4>₹150.00</h4>
+            </div>
+        </div>
+        <button id="payNowBtn" class="pay-btn">Pay Now ₹150</button>
+        <p class="demo-notice">Demo Payment Gateway (No real transaction)</p>
+    </div>
+
+    <!-- Payment Modal Overlay -->
+    <div class="modal-overlay active" id="paymentModal">
+        <div class="modal-container show" id="modalContainer">
+            <!-- Header -->
+            <div class="modal-header">
+                <div class="header-top">
+                    <div class="merchant-info">
+                        <div class="logo">CP</div>
+                        <div class="merchant-name">
+                            <h3>Campus PrintShop</h3>
+                        </div>
+                    </div>
+                    <button class="close-icon-btn" id="closeIconBtn">&times;</button>
+                </div>
+            </div>
+
+            <!-- Selection Screen -->
+            <div id="selectionScreen" class="gateway-view active">
+                <div class="selection-content">
+                    <h2>Choose Payment Method</h2>
+                    <p class="subtitle">Please select how you would like to complete your payment.</p>
+                    <div class="method-cards">
+                        <div class="method-card" onclick="startDemoPayment()">
+                            <div class="card-icon">💳</div>
+                            <div class="card-text">
+                                <h3>Demo Payment</h3>
+                                <p>Simulate payment directly in browser (Recommended)</p>
+                            </div>
+                            <div class="card-arrow">→</div>
+                        </div>
+                        <div class="method-card" onclick="showQRScreen()">
+                            <div class="card-icon">📱</div>
+                            <div class="card-text">
+                                <h3>Pay via QR & Upload Proof</h3>
+                                <p>Scan real QR and upload screenshot manually</p>
+                            </div>
+                            <div class="card-arrow">→</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Screen -->
+            <div id="qrScreen" class="gateway-view">
+                <div class="qr-flow-content">
+                    <h2>Scan & Pay</h2>
+                    <p class="subtitle qr-amount-display">Amount: ₹0.00</p>
+                    <div class="real-qr-container">
+                        <div class="qr-glow-box">
+                            <img src="/img/image.jpeg" alt="Real QR Code" id="realQrImage"
+                                style="width: 250px; height: 250px; object-fit: contain;">
+                        </div>
+                    </div>
+                    <p class="instruction-text">Scan this QR using PhonePe, Google Pay, or Paytm</p>
+                    <div class="countdown-note">
+                        ⏳ Please complete payment within <span id="paymentTimer">05:00</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button class="action-btn" onclick="showUploadScreen()">I Have Paid</button>
+                        <button class="action-btn outline" onclick="openPaymentOptions()">← Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Screen -->
+            <div id="uploadScreen" class="gateway-view">
+                <div class="upload-flow-content">
+                    <h2>Upload Payment Proof</h2>
+                    <p class="subtitle">Please upload the screenshot of your successful transaction.</p>
+                    <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" accept="image/png, image/jpeg" style="display: none;"
+                            onchange="handleUpload(event)">
+                        <div id="uploadPlaceholder">
+                            <div class="upload-icon">⬆️</div>
+                            <p>Click or drag image to upload</p>
+                            <span>Supports JPG, PNG</span>
+                        </div>
+                        <img id="uploadPreview"
+                            style="display: none; max-width: 100%; max-height: 200px; border-radius: 8px; margin: 0 auto;">
+                    </div>
+                    <p class="disclaimer-text">Demo system — payment verification is manual</p>
+                    <div style="margin-top: 10px;">
+                        <button class="action-btn" id="submitProofBtn" onclick="submitRealPayment()" disabled>Submit
+                            Payment Proof</button>
+                        <button class="action-btn outline" onclick="showQRScreen()">← Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="desktop-layout gateway-view" id="demoPaymentFlow">
+                <!-- Sidebar -->
+                <div class="payment-sidebar">
+                    <div class="option-tab active" data-target="upi">
+                        <div class="tab-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <div class="tab-text">
+                            <h4>UPI</h4>
+                            <p>Google Pay, PhonePe</p>
+                        </div>
+                    </div>
+                    <div class="option-tab" data-target="card">
+                        <div class="tab-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="tab-text">
+                            <h4>Card</h4>
+                            <p>Visa, MasterCard</p>
+                        </div>
+                    </div>
+                    <div class="option-tab" data-target="netbanking">
+                        <div class="tab-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                        </div>
+                        <div class="tab-text">
+                            <h4>Netbanking</h4>
+                            <p>All Indian Banks</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="payment-content">
+                    <div class="amount-header">
+                        <p>Amount to pay</p>
+                        <h3>₹150.00</h3>
+                    </div>
+
+                    <!-- UPI Section -->
+                    <div class="section active" id="upi">
+                        <div class="section-title">Pay with UPI ID</div>
+
+                        <div class="input-container">
+                            <div class="input-group">
+                                <label>Enter UPI ID</label>
+                                <input type="text" id="upiId" placeholder="example@upi">
+                            </div>
+                        </div>
+
+                        <div class="divider"><span>OR</span></div>
+
+                        <div class="qr-code-box">
+                            <div class="qr-placeholder">
+                                <img src="/img/image.jpeg" alt="QR Code"
+                                    style="width: 100%; height: 100%; object-fit: contain;">
+                            </div>
+                            <p>Scan QR with any UPI app</p>
+                        </div>
+
+                        <div class="action-footer">
+                            <button class="action-btn" id="payUpiBtn" disabled>Pay ₹150.00</button>
+                        </div>
+                    </div>
+
+                    <!-- CARD Section -->
+                    <div class="section" id="card">
+                        <div class="section-title">Enter Card Details</div>
+                        <div class="input-container">
+                            <div class="input-group">
+                                <label>Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                                <span class="card-type-icon">💳</span>
+                            </div>
+                            <div class="row">
+                                <div class="input-group half">
+                                    <label>Expiry</label>
+                                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="input-group half">
+                                    <label>CVV</label>
+                                    <input type="password" id="cardCvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label>Name on Card</label>
+                                <input type="text" id="cardName" placeholder="John Doe">
+                            </div>
+                        </div>
+                        <div class="save-card-toggle">
+                            <input type="checkbox" id="saveCard" checked>
+                            <label for="saveCard">Save this card securely for future payments</label>
+                        </div>
+                        <div class="action-footer">
+                            <button class="action-btn" id="payCardBtn" disabled>Pay ₹150.00</button>
+                        </div>
+                    </div>
+
+                    <!-- Net Banking Section -->
+                    <div class="section" id="netbanking">
+                        <div class="section-title">Popular Banks</div>
+                        <div class="bank-grid">
+                            <div class="bank-item" tabindex="0"><img src="https://logo.clearbit.com/sbi.co.in" alt="SBI"
+                                    onerror="this.src='https://placehold.co/30x30/1e40af/fff?text=S'">
+                                <p>SBI</p>
+                            </div>
+                            <div class="bank-item" tabindex="0"><img src="https://logo.clearbit.com/hdfcbank.com"
+                                    alt="HDFC" onerror="this.src='https://placehold.co/30x30/1e40af/fff?text=H'">
+                                <p>HDFC</p>
+                            </div>
+                            <div class="bank-item" tabindex="0"><img src="https://logo.clearbit.com/icicibank.com"
+                                    alt="ICICI" onerror="this.src='https://placehold.co/30x30/1e40af/fff?text=I'">
+                                <p>ICICI</p>
+                            </div>
+                            <div class="bank-item" tabindex="0"><img src="https://logo.clearbit.com/axisbank.com"
+                                    alt="Axis" onerror="this.src='https://placehold.co/30x30/1e40af/fff?text=A'">
+                                <p>Axis</p>
+                            </div>
+                        </div>
+                        <div class="input-group" style="margin-top: 20px;">
+                            <label>Other Banks</label>
+                            <select id="otherBanks">
+                                <option value="" disabled selected>Select your bank</option>
+                                <option value="pnb">Punjab National Bank</option>
+                                <option value="bob">Bank of Baroda</option>
+                                <option value="kotak">Kotak Mahindra Bank</option>
+                            </select>
+                        </div>
+                        <div class="action-footer">
+                            <button class="action-btn" id="payBankBtn" disabled>Pay ₹150.00</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <span class="secure-text">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    Secured by <strong>MockPay Seamless</strong>
+                </span>
+            </div>
+
+            <!-- Overlays within the modal for state management -->
+            <div class="status-overlay" id="processingScreen">
+                <div class="spinner"></div>
+                <h3>Processing Payment</h3>
+                <p>Please do not close this window or press back.</p>
+            </div>
+
+            <div class="status-overlay success" id="successScreen">
+                <div class="success-checkmark">
+                    <div class="check-icon">
+                        <span class="icon-line line-tip"></span>
+                        <span class="icon-line line-long"></span>
+                        <div class="icon-circle"></div>
+                        <div class="icon-fix"></div>
+                    </div>
+                </div>
+                <h3>Payment Successful!</h3>
+                <p id="successTxn">Txn ID: </p>
+                <p style="font-size:13px;color:#718096;margin-top:8px;">This window will close automatically…</p>
+                <button class="action-btn outline" onclick="window.close()">Close Window</button>
+            </div>
+
+            <div class="status-overlay failed" id="failedScreen">
+                <div class="fail-cross">
+                    <svg viewBox="0 0 40 40">
+                        <path d="M10 10 L30 30 M30 10 L10 30" stroke="white" stroke-width="4" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <h3>Payment Failed</h3>
+                <p>An error occurred while processing.</p>
+                <button class="action-btn outline" onclick="resetGatewayState()">Retry Payment</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

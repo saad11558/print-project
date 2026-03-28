@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopkeeper Dashboard – PrintShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🖨️</div>
+        <span>Print<strong>Shop</strong></span>
+      </a>
+      <span class="role-tag tag-shop">Shop Owner</span>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-label">MANAGEMENT</div>
+      <a class="nav-item active" data-section="shop-dashboard-section" onclick="showSection(this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+
+      <a class="nav-item" data-section="shop-payments-section" onclick="showSection(this)">
+        <span class="nav-icon">💰</span> Payment Tracker
+      </a>
+      <a class="nav-item" data-section="shop-ai-verify-section" onclick="showSection(this)">
+        <span class="nav-icon">🤖</span> AI Verification
+      </a>
+      <a class="nav-item" data-section="shop-analytics-section" onclick="showSection(this)">
+        <span class="nav-icon">📈</span> Analytics
+      </a>
+      <a class="nav-item" data-section="shop-history-section" onclick="showSection(this)">
+        <span class="nav-icon">📜</span> Transaction History
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div style="padding:8px 12px;">
+        <div class="queue-status-indicator" id="queue-status-sidebar">
+          <span class="queue-dot queue-dot-free"></span>
+          <span class="text-sm font-semibold" id="queue-status-text">Queue: Free</span>
+        </div>
+      </div>
+      <a href="#" class="nav-item nav-item-logout" id="shop-logout-btn">
+        <span class="nav-icon">🚪</span> Log Out
+      </a>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title">Print Shop Dashboard</div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost btn-sm" onclick="toggleTheme()" style="margin-right:8px;">
+          <span class="sun-icon">☀️</span><span class="moon-icon hidden">🌙</span>
+        </button>
+        <div class="notif-bell-wrap">
+          <button class="notif-bell" id="notif-bell" onclick="ShopNotif.togglePanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span class="notif-bell-count" id="notif-count" data-count="0"></span>
+          </button>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel-header">
+              <h4>🔔 Notifications</h4>
+              <button class="notif-clear-btn" onclick="ShopNotif.clearAll()">Clear All</button>
+            </div>
+            <div class="notif-panel-body" id="notif-panel-body"></div>
+          </div>
+        </div>
+        <div class="avatar avatar-sm" id="shop-avatar">SP</div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page-content" id="shop-dashboard-section">
+      <div class="page-header" id="shop-overview">
+        <h1 id="shop-welcome-msg">Welcome, Shop Owner 🖨️</h1>
+        <p>Monitor incoming orders, track payments, and manage your print queue in real-time.</p>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-indigo">📦</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Total Orders</div>
+            <div class="stat-card-value" id="shop-total-orders">0</div>
+          </div>
+        </div>
+        <div class="stat-card stat-card-highlight">
+          <div class="stat-card-icon icon-bg-green">✅</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Verified Payments</div>
+            <div class="stat-card-value" id="shop-verified-payments">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-amber">⏳</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Submitted (Waiting)</div>
+            <div class="stat-card-value" id="shop-submitted-payments">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-green">💰</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Total Revenue</div>
+            <div class="stat-card-value" id="shop-total-revenue">₹0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Queue Status -->
+      <div class="card">
+        <div class="card-header">
+          <h3>🖨️ Live Queue Status</h3>
+          <div class="queue-status-badge" id="queue-status-badge">
+            <span class="queue-dot queue-dot-free"></span>
+            <span id="queue-badge-text">Free</span>
+          </div>
+        </div>
+        <div class="card-body" id="shop-active-queue-preview">
+          <p class="text-muted text-center">No orders in queue.</p>
+        </div>
+      </div>
+
+      <!-- Recent Completed -->
+      <div class="card">
+        <div class="card-header">
+          <h3>✅ Recently Completed</h3>
+        </div>
+        <div class="card-body" id="shop-recent-completed">
+          <p class="text-muted text-center">No completed orders yet.</p>
+        </div>
+      </div>
+
+      <!-- LocalStorage Payment Proofs (New) -->
+      <div class="card" style="margin-top: 24px;">
+        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <h3>📸 Uploaded Payment Proofs</h3>
+          <button class="btn btn-sm btn-ghost" onclick="renderPaymentsData()">🔄 Refresh</button>
+        </div>
+        <div class="card-body">
+          <div id="payments-data-list"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+            <!-- Rendered dynamically by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ===== PAYMENT TRACKER ===== -->
+    <div class="page-content hidden" id="shop-payments-section">
+      <div class="page-header">
+        <h1>Payment Tracker 💰</h1>
+        <p>Track all payments received from students.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-card-highlight">
+          <div class="stat-card-icon icon-bg-green">✅</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Verified</div>
+            <div class="stat-card-value" id="pay-verified">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-amber">⏳</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Submitted</div>
+            <div class="stat-card-value" id="pay-submitted">0</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon icon-bg-indigo">₹</div>
+          <div class="stat-card-info">
+            <div class="stat-card-label">Total Collected</div>
+            <div class="stat-card-value" id="pay-total">₹0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Payment Records</h3>
+        </div>
+        <div class="card-body" style="overflow-x:auto;">
+          <table class="data-table" id="payments-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Student</th>
+                <th>Poll</th>
+                <th>Classroom</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Transaction ID</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    <!-- ===== AI VERIFICATION PANEL ===== -->
+    <div class="page-content hidden" id="shop-ai-verify-section">
+      <div class="page-header">
+        <h1>Payment Verification Panel 🤖</h1>
+        <p>AI Verification checks timestamp, duplicates, and file structure to classify uploaded payment screenshots.
+        </p>
+        <span class="badge badge-info" style="margin-top:8px;">Ensures payment authenticity before processing
+          orders</span>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Verify Uploaded Proofs</h3>
+        </div>
+        <div class="card-body" style="overflow-x:auto;">
+          <table class="data-table" id="ai-verify-table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Payment Screenshot</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>AI Action</th>
+              </tr>
+            </thead>
+            <tbody id="ai-verify-tbody">
+              <!-- Dynamically populated via js/shop.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ANALYTICS ===== -->
+    <div class="page-content hidden" id="shop-analytics-section">
+      <div class="page-header">
+        <h1>Analytics 📈</h1>
+        <p>Insights into your print shop performance.</p>
+      </div>
+      <div id="shop-analytics-content"></div>
+    </div>
+
+    <!-- ===== TRANSACTION HISTORY ===== -->
+    <div class="page-content hidden" id="shop-history-section">
+      <div class="page-header">
+        <h1>Transaction History 📜</h1>
+        <p>Complete log of all transactions.</p>
+      </div>
+      <div class="card">
+        <div class="card-body" style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Transaction ID</th>
+                <th>Student</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="history-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+
+</html>

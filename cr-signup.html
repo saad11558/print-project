@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinator Signup - PrintShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="login-page">
+
+  <div class="login-container animate-fade-in-up">
+    <div class="login-card">
+      <div class="login-header text-center mb-4">
+        <a href="index.html" class="logo justify-center mb-3">
+          <div class="logo-icon" style="font-size:2.5rem; line-height:1;">🖨️</div>
+          <span style="font-size:1.75rem; color:var(--text-primary);">Print<strong
+              class="text-primary">Shop</strong></span>
+        </a>
+        <h2 style="font-size:1.125rem; font-weight:700;">Create CR Account</h2>
+        <p class="text-secondary text-sm">Set up your coordinator account to manage print queues.</p>
+      </div>
+
+      <form id="signupForm" class="login-form">
+        <input type="hidden" id="fixedRole" value="coordinator">
+
+        <div id="signupError" class="info-box toast-error hidden mb-4"
+          style="background:#FEE2E2; border:1px solid #F87171;">
+          <div class="flex items-center gap-2" style="color:#DC2626;">
+            <span style="font-size:1.1rem; line-height:1;">⚠️</span>
+            <span class="error-text text-sm font-medium">Signup failed</span>
+          </div>
+        </div>
+
+        <div id="signupSuccess" class="info-box toast-success hidden mb-4"
+          style="background:#dcfce7; border:1px solid #166534;">
+          <div class="flex items-center gap-2" style="color:#166534;">
+            <span style="font-size:1.1rem; line-height:1;">✔</span>
+            <span class="success-text text-sm font-medium">Account created successfully!</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg></span>
+            <input type="text" id="name" class="form-input" placeholder="John Doe" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M3 8L12 13L21 8M5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg></span>
+            <input type="email" id="email" class="form-input" placeholder="cr@campus.edu" required>
+          </div>
+          <p class="text-secondary text-xs mt-1" style="font-size: 0.75rem; color: #6B7280;">Use your real email (name or college ID recommended)</p>
+        </div>
+
+        <div class="form-group mb-3 text-left">
+          <label for="accessKey" class="flex justify-between items-center">
+            Coordinator Access Key
+            <span class="text-xs text-secondary italic" title="Contact admin to get access key">Need a key? ⓘ</span>
+          </label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M12 15V17M6 11V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V11M5 11H19C20.1046 11 21 11.8954 21 13V21C21 22.1046 20.1046 23 19 23H5C3.89543 23 3 22.1046 3 21V13C3 11.8954 3.89543 11 5 11Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg></span>
+            <input type="text" id="accessKey" class="form-input" placeholder="Enter access key" required>
+          </div>
+        </div>
+
+        <div class="form-group mb-4">
+          <label for="password">Password</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M12 15V17M6 11V7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7V11M5 11H19C20.1046 11 21 11.8954 21 13V21C21 22.1046 20.1046 23 19 23H5C3.89543 23 3 22.1046 3 21V13C3 11.8954 3.89543 11 5 11Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg></span>
+            <input type="password" id="password" class="form-input" placeholder="••••••••" minlength="6" required>
+            <button type="button" id="togglePassword" class="input-action-icon" tabindex="-1"
+              title="Show/Hide Password"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                  d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12ZM22.5 12C22.5 12 19 19 12 19C5 19 1.5 12 1.5 12C1.5 12 5 5 12 5C19 5 22.5 12 22.5 12Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg></button>
+          </div>
+        </div>
+
+        <button type="submit" id="signupBtn" class="btn btn-primary btn-block btn-lg mt-2 relative"
+          style="overflow:hidden;">
+          <span class="btn-text">Sign Up as CR</span>
+          <span class="spinner-small hidden absolute" style="right:20px;"></span>
+        </button>
+      
+        <div class="mt-4" style="text-align: center; margin-top: 16px;">
+          <div id="g_id_onload"
+               data-client_id="911807895290-mtuvqh83ir6ivhubi69ipjnk43urvsuh.apps.googleusercontent.com"
+               data-callback="handleGoogleLogin"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-size="large"
+               data-theme="outline"
+               data-text="sign_in_with"
+               data-shape="rectangular"
+               data-logo_alignment="center"
+               style="display: inline-block;">
+          </div>
+        </div>
+      </form>
+
+      <div class="login-footer text-center mt-5 pt-4 border-t flex justify-center items-center">
+        <p class="text-sm text-secondary">Already a coordinator? <a href="cr-login.html"
+            class="text-primary font-semibold hover-underline">Log in here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</body>
+
+</html>

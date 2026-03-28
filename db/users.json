@@ -1,0 +1,42 @@
+[
+  {
+    "id": "183ab830-36c3-400a-b4dc-51d4e2a3e9e4",
+    "name": "Test Student",
+    "email": "test@student.com",
+    "password": "$2a$10$EnDpQqXTsxaNTuZJ6/xlPOpjfeDlhskD8OdC87u2re6h54NCaA9oq",
+    "role": "student",
+    "createdAt": "2026-03-28T06:56:50.108Z"
+  },
+  {
+    "id": "2d70808e-1fb1-4a72-8953-ceb2614ecb26",
+    "name": "VEDANT",
+    "email": "vedshelar2006@gmail.com",
+    "password": "$2a$10$Z2AiQCpXZ9H9.tSi4C9hyO0A/oZIUdTivhj4ppOB0LNVB4YCWiw3y",
+    "role": "student",
+    "createdAt": "2026-03-28T07:03:31.565Z"
+  },
+  {
+    "id": "364596a7-8d94-4d9d-932e-c5317dd01371",
+    "name": "SAISH MALALIKAR",
+    "email": "saish1@gmail.com",
+    "password": "$2a$10$YnT22wKHm1Xz9HO02LEOceLYaqKrqUC0lGoTwhdPo3VVxZRngiqAu",
+    "role": "coordinator",
+    "createdAt": "2026-03-28T07:06:14.277Z"
+  },
+  {
+    "id": "76e78fac-2751-4c0d-8435-cb01cbf2d8bc",
+    "name": "shop wala",
+    "email": "shop1@gmail.com",
+    "password": "$2a$10$PBSEVHPP6928YpCnWw38XemcjDwmDyZj9/apvK73.NKWg9TJiScKq",
+    "role": "shop",
+    "createdAt": "2026-03-28T07:08:57.037Z"
+  },
+  {
+    "id": "14052cc1-d1db-4a49-be7e-217f4235ea34",
+    "name": "VEDANT",
+    "email": "vedant1@gmail.com",
+    "password": "$2a$10$/hBieRMQbIhYGXKzaP9VgeoR3LhpjOnt24QP9Ka6ZzOMpwwqrcoza",
+    "role": "student",
+    "createdAt": "2026-03-28T07:18:25.312Z"
+  }
+]
